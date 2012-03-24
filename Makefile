@@ -3,11 +3,11 @@ TARGET = gPlot++
 
 OBJS = main.o view.o                                                           \
        lib/callbacks.o lib/controls.o lib/glib2d.o
-LIBS = -lpspvram -ljpeg -lpng -lz -lpspgum -lpspgu -lpsprtc -lm -lpspfpu       \
-       -lstdc++
+LIBS = -lpspvram -ljpeg -lpng -lz -lpspgum -lpspgu -lpsprtc -lpspfpu           \
+       -lmuparser -lm -lstdc++
 
 CFLAGS = -O2 -G0 -Wall
-CXXFLAGS = $(CFLAGS) -fno-exceptions -fno-rtti
+CXXFLAGS = $(CFLAGS) -fexceptions -fno-rtti
 ASFLAGS = $(CFLAGS)
 
 BUILD_PRX = 1

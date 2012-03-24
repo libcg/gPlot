@@ -6,8 +6,11 @@ View::View() :
     x(0.f), xs(0.f), xst(xs),
     y(0.f), ys(0.f), yst(ys),
             zs(1.f), zst(1.f),
-    w(BASE_W), h(BASE_H)
+    w(BASE_W), h(BASE_H),
+    parser()
 {
+    parser.DefineVar("x", &cx);
+    parser.SetExpr("1/x + 0.2234*x*x");
 }
 
 float View::screenToViewX(float x)
@@ -97,41 +100,22 @@ void View::drawOrigin()
     g2dEnd();
 }
 
-// FIXME
-float compute(float x)
-{
-    return cosf(x*x);
-}
 
 void View::drawFunction()
 {
-    //float y1=0, y2, y3;
-    
+    float cy;
+
     g2dBeginLines(G2D_STRIP);
     {
         g2dSetColor(BLACK);
 
         for (int i=0; i<G2D_SCR_W; i++)
         {
-            float y3 = viewToScreenY(compute(screenToViewX(i)));
+            cx = screenToViewX(i);
+            cy = parser.Eval();
             
-            /*if (i > 0) // FIXME
-            {
-                y2 = viewToScreenY(compute(screenToViewX(i-0.5f)));
-                
-                if ((y1 < y3 && (y2 < y1 || y3 < y2)) ||
-                    (y3 < y1 && (y2 < y3 || y1 < y2)))
-                {
-                    g2dEnd();
-                    g2dBeginLines(G2D_STRIP);
-                    g2dSetColor(BLACK);
-                }
-            }*/
-            
-            g2dSetCoordXY(i, y3);
+            g2dSetCoordXY(i, viewToScreenY(cy));
             g2dAdd();
-            
-            //y1 = y3;
         }
     }
     g2dEnd();
