@@ -8,7 +8,7 @@ class Function
 {
 private:
     mu::Parser parser;
-    float cx, cy;
+    double cx, cy;
     bool valid;
     
 public:

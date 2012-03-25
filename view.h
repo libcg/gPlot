@@ -1,8 +1,8 @@
 #ifndef VIEW_H
 #define VIEW_H
 
-#include "lib/glib2d.h"
-#include "lib/controls.h"
+#include "glib2d.h"
+#include "controls.h"
 #include "function.h"
 
 #define BASE_W 30.f

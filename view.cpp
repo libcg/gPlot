@@ -10,7 +10,7 @@ View::View() :
     f()
 {
     
-    f.set("1/x + 0.2234*x*x");
+    f.set("x < 0 ? x*x+1 : cos(x)");
 }
 
 float View::screenToViewX(float x)
@@ -105,12 +105,12 @@ void View::drawFunction()
 {
     float y;
     
-    g2dBeginLines(G2D_STRIP);
+    if (f.isValid())
     {
-        g2dSetColor(BLACK);
-
-        if (f.isValid())
+        g2dBeginLines(G2D_STRIP);
         {
+            g2dSetColor(BLACK);
+
             for (int i=0; i<G2D_SCR_W; i++)
             {      
                 if (!f.compute(&y, screenToViewX(i)))   
@@ -120,8 +120,9 @@ void View::drawFunction()
                 }
             }
         }
+        g2dEnd();
     }
-    g2dEnd();
+    else g2dClear(RED);
 }
 
 void View::draw()

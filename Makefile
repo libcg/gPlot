@@ -1,12 +1,12 @@
 MEDIA = /media/PANDORA/PSP/GAME/CAT_Homebrews\ perso/
 TARGET = gPlot++
 
-OBJS = main.o view.o function.o                                                \
-       lib/callbacks.o lib/controls.o lib/glib2d.o
-LIBS = -lpspvram -ljpeg -lpng -lz -lpspgum -lpspgu -lpsprtc -lpspfpu           \
+OBJS = main.o view.o function.o callbacks.o controls.o
+       
+LIBS = -lglib2d -lpspvram -ljpeg -lpng -lz -lpspgum -lpspgu -lpsprtc -lpspfpu \
        -lmuparser -lm -lstdc++
 
-CFLAGS = -O2 -G0 -Wall
+CFLAGS = -O2 -G0 -Wall -I./include -L./lib
 CXXFLAGS = $(CFLAGS) -fexceptions -fno-rtti
 ASFLAGS = $(CFLAGS)
 

@@ -1,6 +1,6 @@
 #include "main.h"
-#include "lib/callbacks.h"
-#include "lib/glib2d.h"
+#include "callbacks.h"
+#include "glib2d.h"
 #include <pspkernel.h>
 #include <pspfpu.h>
 
