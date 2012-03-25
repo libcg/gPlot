@@ -1,9 +1,10 @@
 #ifndef VIEW_H
 #define VIEW_H
 
-#include "glib2d.h"
+#include "common.h"
 #include "controls.h"
 #include "function.h"
+#include <glib2d.h>
 
 #define BASE_W 30.f
 #define BASE_H 17.f
@@ -21,10 +22,10 @@ private:
     float w, h;
     Function f;
 
-    float screenToViewX(float x);
-    float screenToViewY(float y);
-    float viewToScreenX(float x);
-    float viewToScreenY(float y);
+    float screenToViewX(FTYPE x);
+    float screenToViewY(FTYPE y);
+    FTYPE viewToScreenX(float x);
+    FTYPE viewToScreenY(float y);
     void camera();
     void drawOrigin();
     void drawFunction();

@@ -32,7 +32,7 @@ void Function::set(std::string str)
     }
 }
 
-bool Function::compute(float *y, float x)
+bool Function::compute(FTYPE *y, FTYPE x)
 {
     cx = x;
     

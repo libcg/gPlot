@@ -13,22 +13,22 @@ View::View() :
     f.set("x < 0 ? x*x+1 : cos(x)");
 }
 
-float View::screenToViewX(float x)
+float View::screenToViewX(FTYPE x)
 {
-    return ( x * this->w / G2D_SCR_W + this->x - this->w/2);
+    return ( x * this->w / G2D_SCR_W + this->x - this->w/2.f);
 }
 
-float View::screenToViewY(float y)
+float View::screenToViewY(FTYPE y)
 {
-    return (-y * this->h / G2D_SCR_H + this->y + this->h/2);
+    return (-y * this->h / G2D_SCR_H + this->y + this->h/2.f);
 }
 
-float View::viewToScreenX(float x)
+FTYPE View::viewToScreenX(float x)
 {
     return (( x - this->x + this->w/2.f) * G2D_SCR_W / this->w);
 }
 
-float View::viewToScreenY(float y)
+FTYPE View::viewToScreenY(float y)
 {
     return ((-y + this->y + this->h/2.f) * G2D_SCR_H / this->h);
 }
@@ -37,7 +37,7 @@ void View::camera()
 {
     xs += (xst * MOVE_SPEED * w / BASE_W - xs) * MOVE_ACCEL;
     ys += (yst * MOVE_SPEED * h / BASE_H - ys) * MOVE_ACCEL;
-    zs += (powf(2.f, -zst * ZOOM_SPEED) - zs) * ZOOM_ACCEL;
+    zs += (pow(2.f, -zst * ZOOM_SPEED) - zs) * ZOOM_ACCEL;
     
     x += xs;
     y += ys;
@@ -51,8 +51,8 @@ void View::drawOrigin()
     int ivx, ivy;
     int isx, isy;
     
-    ox = viewToScreenX(0.f);
-    oy = viewToScreenY(0.f);
+    ox = viewToScreenX(0.);
+    oy = viewToScreenY(0.);
     
     g2dBeginLines((g2dLine_Mode)0);
     {
@@ -75,8 +75,8 @@ void View::drawOrigin()
     }
     g2dEnd();
     
-    ivx = (int)screenToViewX(0) - 1;
-    ivy = (int)screenToViewY(0) + 1;
+    ivx = (int)screenToViewX(0.f) - 1;
+    ivy = (int)screenToViewY(0.f) + 1;
     
     g2dBeginPoints();
     {
@@ -103,7 +103,7 @@ void View::drawOrigin()
 
 void View::drawFunction()
 {
-    float y;
+    FTYPE y;
     
     if (f.isValid())
     {
@@ -111,7 +111,7 @@ void View::drawFunction()
         {
             g2dSetColor(BLACK);
 
-            for (int i=0; i<G2D_SCR_W; i++)
+            for (float i=0.f; i<G2D_SCR_W; i++)
             {      
                 if (!f.compute(&y, screenToViewX(i)))   
                 {
