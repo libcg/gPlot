@@ -1,0 +1,3 @@
+gPlot++ is a function plotter for PSP.
+
+It uses muParser to parse mathematical expressions and gLib2D to display them.
