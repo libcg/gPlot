@@ -7,10 +7,10 @@ View::View() :
     y(0.f), ys(0.f), yst(ys),
             zs(1.f), zst(1.f),
     w(BASE_W), h(BASE_H),
-    parser()
+    f()
 {
-    parser.DefineVar("x", &cx);
-    parser.SetExpr("1/x + 0.2234*x*x");
+    
+    f.set("1/x + 0.2234*x*x");
 }
 
 float View::screenToViewX(float x)
@@ -103,19 +103,22 @@ void View::drawOrigin()
 
 void View::drawFunction()
 {
-    float cy;
-
+    float y;
+    
     g2dBeginLines(G2D_STRIP);
     {
         g2dSetColor(BLACK);
 
-        for (int i=0; i<G2D_SCR_W; i++)
+        if (f.isValid())
         {
-            cx = screenToViewX(i);
-            cy = parser.Eval();
-            
-            g2dSetCoordXY(i, viewToScreenY(cy));
-            g2dAdd();
+            for (int i=0; i<G2D_SCR_W; i++)
+            {      
+                if (!f.compute(&y, screenToViewX(i)))   
+                {
+                    g2dSetCoordXY(i, viewToScreenY(y));
+                    g2dAdd();
+                }
+            }
         }
     }
     g2dEnd();

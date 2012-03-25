@@ -3,7 +3,7 @@
 
 #include "lib/glib2d.h"
 #include "lib/controls.h"
-#include "muParser.h"
+#include "function.h"
 
 #define BASE_W 30.f
 #define BASE_H 17.f
@@ -19,8 +19,7 @@ private:
     float y, ys, yst;
     float    zs, zst;
     float w, h;
-    mu::Parser parser;
-    float cx;
+    Function f;
 
     float screenToViewX(float x);
     float screenToViewY(float y);
