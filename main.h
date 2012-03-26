@@ -1,6 +1,7 @@
 #ifndef MAIN_H
 #define MAIN_H
 
+#include "functionmanager.h"
 #include "controls.h"
 #include "view.h"
 
@@ -8,6 +9,7 @@ class Main
 {
 private:
     Controls ctrl;
+    FunctionManager manager;
     View view;
 
 public:

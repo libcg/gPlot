@@ -9,7 +9,7 @@ PSP_HEAP_SIZE_KB(-4096);
 PSP_MAIN_THREAD_ATTR(THREAD_ATTR_USER | THREAD_ATTR_VFPU);
 
 Main::Main() :
-    ctrl(), view()
+    ctrl(), manager(), view(&manager) 
 {
     g2dInit();
     

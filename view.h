@@ -3,7 +3,7 @@
 
 #include "common.h"
 #include "controls.h"
-#include "function.h"
+#include "functionmanager.h"
 #include <glib2d.h>
 
 #define BASE_W 30.f
@@ -12,15 +12,19 @@
 #define MOVE_SPEED 0.4f
 #define ZOOM_ACCEL 0.06f
 #define ZOOM_SPEED 0.045f
+#define TINY_SPEED 0.001f
+#define TINY_ZOOM  0.001f
+
+class FunctionManager;
 
 class View
 {
 private:
+    FunctionManager* manager;
     float x, xs, xst;
     float y, ys, yst;
     float    zs, zst;
     float w, h;
-    Function f;
 
     float screenToViewX(FTYPE x);
     float screenToViewY(FTYPE y);
@@ -31,7 +35,7 @@ private:
     void drawFunction();
 
 public:
-    View();
+    View(FunctionManager* manager);
     void draw();
     void controls(Controls* ctrl);
 };

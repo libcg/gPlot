@@ -2,15 +2,13 @@
 #include <iostream>
 #include <cmath>
 
-View::View() :
+View::View(FunctionManager* manager) :
+    manager(manager),
     x(0.f), xs(0.f), xst(xs),
     y(0.f), ys(0.f), yst(ys),
             zs(1.f), zst(1.f),
-    w(BASE_W), h(BASE_H),
-    f()
+    w(BASE_W), h(BASE_H)
 {
-    
-    f.set("x < 0 ? x*x+1 : cos(x)");
 }
 
 float View::screenToViewX(FTYPE x)
@@ -43,6 +41,13 @@ void View::camera()
     y += ys;
     w *= zs;
     h *= zs;
+    
+    if (fabs(xs) > TINY_SPEED || fabs(zs - 1.f) > TINY_ZOOM)
+    {
+        manager->update(screenToViewX(0.f),
+                        screenToViewX(G2D_SCR_W),
+                        G2D_SCR_W);
+    }
 }
 
 void View::drawOrigin()
@@ -102,27 +107,24 @@ void View::drawOrigin()
 
 
 void View::drawFunction()
-{
-    FTYPE y;
-    
-    if (f.isValid())
+{    
+    for (unsigned int i=0; i<manager->size(); i++)
     {
+        Function *f = manager->getFunction(i);
+        if (!f->isValid()) continue;
+        
         g2dBeginLines(G2D_STRIP);
         {
             g2dSetColor(BLACK);
 
-            for (float i=0.f; i<G2D_SCR_W; i++)
+            for (unsigned int j=0; j<f->getValues()->size(); j++)
             {      
-                if (!f.compute(&y, screenToViewX(i)))   
-                {
-                    g2dSetCoordXY(i, viewToScreenY(y));
-                    g2dAdd();
-                }
+                g2dSetCoordXY(j, viewToScreenY(f->getValues()->at(j)));
+                g2dAdd();
             }
         }
         g2dEnd();
     }
-    else g2dClear(RED);
 }
 
 void View::draw()
@@ -140,4 +142,21 @@ void View::controls(Controls* ctrl)
           ctrl->buttonPressed(PSP_CTRL_DOWN);
     zst = ctrl->buttonPressed(PSP_CTRL_RTRIGGER) -
           ctrl->buttonPressed(PSP_CTRL_LTRIGGER);
+          
+    if (ctrl->buttonPressed(PSP_CTRL_CROSS))
+    {
+        manager->setFunction(0, "0.5*x^3");
+    }
+    if (ctrl->buttonPressed(PSP_CTRL_SQUARE))
+    {
+        manager->setFunction(1, "cos(x)");
+    }
+    if (ctrl->buttonPressed(PSP_CTRL_TRIANGLE))
+    {
+        manager->setFunction(2, "x*sin(x)");
+    }
+    if (ctrl->buttonPressed(PSP_CTRL_CIRCLE))
+    {
+        manager->setFunction(2, "exp(x)");
+    }
 }

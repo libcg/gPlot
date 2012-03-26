@@ -1,19 +1,26 @@
 #include "function.h"
+#include <pspthreadman.h>
 
 Function::Function() :
-    parser(), valid(false)
+    valid(false), values()
 {
-    parser.DefineVar("x", &cx);
+    parser = new mu::Parser();
+    parser->DefineVar("x", &cx);
 }
 
-void Function::set(std::string str)
+Function::~Function()
 {
-    parser.SetExpr(str);
+    delete parser;
+}
+
+void Function::setExpr(std::string str)
+{
+    parser->SetExpr(str);
+    valid = true;
     
     try
     {
-        parser.Eval();
-        valid = true;
+        parser->Eval();
     }
     catch (mu::Parser::exception_type &error)
     {
@@ -34,11 +41,13 @@ void Function::set(std::string str)
 
 bool Function::compute(FTYPE *y, FTYPE x)
 {
+    if (!valid) return true;
+
     cx = x;
     
     try
     {
-        cy = parser.Eval();
+        cy = parser->Eval();
     }
     catch (mu::Parser::exception_type &error)
     {
@@ -50,7 +59,30 @@ bool Function::compute(FTYPE *y, FTYPE x)
     return false;
 }
 
+void Function::computeRange(FTYPE a, FTYPE b, unsigned int n)
+{
+    std::vector<FTYPE> values(n, 0.);
+
+    for (unsigned int i=0; i<n; i++)
+    {
+        compute(&values[i], a + (b-a) / n * i);
+    }
+    
+    sceKernelDelayThread(0);
+    this->values = values;
+}
+
 bool Function::isValid()
 {
     return valid;
+}
+
+std::string Function::getExpr()
+{
+    return parser->GetExpr();
+}
+
+std::vector<FTYPE>* Function::getValues()
+{
+    return &values;
 }
