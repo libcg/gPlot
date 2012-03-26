@@ -3,6 +3,7 @@
 #include <glib2d.h>
 #include <pspkernel.h>
 #include <pspfpu.h>
+#include <psppower.h>
 
 PSP_MODULE_INFO("app", 0, 1, 1);
 PSP_HEAP_SIZE_KB(-4096);
@@ -14,6 +15,7 @@ Main::Main() :
     g2dInit();
     
     pspFpuSetEnable(0);
+    scePowerSetClockFrequency(333, 333, 166);
 }
 
 Main::~Main()
