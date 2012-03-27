@@ -2,15 +2,18 @@
 #include <pspthreadman.h>
 
 Function::Function() :
-    valid(false), values()
+    valid(false)
 {
     parser = new mu::Parser();
     parser->DefineVar("x", &cx);
+    
+    values = new std::vector<FTYPE>();
 }
 
 Function::~Function()
 {
     delete parser;
+    delete values;
 }
 
 void Function::setExpr(std::string str)
@@ -61,15 +64,16 @@ bool Function::compute(FTYPE *y, FTYPE x)
 
 void Function::computeRange(FTYPE a, FTYPE b, unsigned int n)
 {
-    std::vector<FTYPE> values(n, 0.);
+    std::vector<FTYPE> *tvalues = new std::vector<FTYPE>(n, 0.), *dvalues;
 
-    for (unsigned int i=0; i<n; i++)
+    for (unsigned int i=0; i<tvalues->size(); i++)
     {
-        compute(&values[i], a + (b-a) / n * i);
+        compute(&tvalues->at(i), a + (b-a) / n * i);
     }
     
-    sceKernelDelayThread(0);
-    this->values = values;
+    dvalues = values;
+    values = tvalues;
+    delete dvalues;
 }
 
 bool Function::isValid()
@@ -84,5 +88,5 @@ std::string Function::getExpr()
 
 std::vector<FTYPE>* Function::getValues()
 {
-    return &values;
+    return values;
 }

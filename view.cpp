@@ -157,6 +157,6 @@ void View::controls(Controls* ctrl)
     }
     if (ctrl->buttonPressed(PSP_CTRL_CIRCLE))
     {
-        manager->setFunction(2, "exp(x)");
+        manager->setFunction(3, "exp(x)");
     }
 }

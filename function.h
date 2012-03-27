@@ -12,7 +12,7 @@ private:
     mu::Parser *parser;
     FTYPE cx, cy;
     bool valid;
-    std::vector<double> values;
+    std::vector<FTYPE>* values;
     
 public:
     Function();

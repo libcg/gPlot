@@ -63,8 +63,6 @@ void FunctionManager::setFunction(unsigned int i, std::string expr)
     if (i >= size()) return;
     
     functions[i]->setExpr(expr);
-
-    setDirty(true);
 }
 
 void FunctionManager::setDirty(bool state)
