@@ -9,6 +9,9 @@ View::View(FunctionManager* manager) :
             zs(1.f), zst(1.f),
     w(BASE_W), h(BASE_H)
 {
+    manager->update(screenToViewX(0.f),
+                    screenToViewX(G2D_SCR_W),
+                    G2D_SCR_W);
 }
 
 FTYPE View::screenToViewX(float x)
@@ -46,7 +49,7 @@ void View::camera()
     {
         manager->update(screenToViewX(0.f),
                         screenToViewX(G2D_SCR_W),
-                        G2D_SCR_W);
+                        G2D_SCR_W / 2);
     }
 }
 
