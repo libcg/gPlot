@@ -28,10 +28,10 @@ private:
     float    zs, zst;
     float w, h;
 
-    float screenToViewX(FTYPE x);
-    float screenToViewY(FTYPE y);
-    FTYPE viewToScreenX(float x);
-    FTYPE viewToScreenY(float y);
+    FTYPE screenToViewX(float x);
+    FTYPE screenToViewY(float y);
+    float viewToScreenX(FTYPE x);
+    float viewToScreenY(FTYPE y);
     void camera();
     void drawOrigin();
     void drawFunction();

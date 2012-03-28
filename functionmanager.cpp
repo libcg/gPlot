@@ -11,7 +11,7 @@ int FunctionManager::thread(unsigned int args, void *argp)
             sceKernelDelayThread(1000);
         }
 
-        std::cout << "update" << std::endl;
+        _this->setDirty(false);
 
         for (unsigned int i=0; i<_this->size(); i++)
         {
@@ -20,8 +20,6 @@ int FunctionManager::thread(unsigned int args, void *argp)
             
             f->computeRange(_this->getA(), _this->getB(), _this->getN());
         }
-
-        _this->setDirty(false);
     }
     
     return 0;
@@ -37,7 +35,7 @@ FunctionManager::FunctionManager() :
         functions[i] = new Function();
     }
     
-    thid = sceKernelCreateThread("fmanager", thread, 0x18, 0x10000, 0, NULL);
+    thid = sceKernelCreateThread("fmanager", thread, 0x18, 0x20000, 0, NULL);
     sceKernelStartThread(thid, sizeof(_this), &_this);
 }
 
@@ -65,6 +63,8 @@ void FunctionManager::setFunction(unsigned int i, std::string expr)
     if (i >= size()) return;
     
     functions[i]->setExpr(expr);
+    
+    setDirty(true);
 }
 
 void FunctionManager::setDirty(bool state)

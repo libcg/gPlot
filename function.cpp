@@ -2,7 +2,7 @@
 #include <pspthreadman.h>
 
 Function::Function() :
-    valid(false)
+    valid(false), init(true)
 {
     parser = new mu::Parser();
     parser->DefineVar("x", &cx);
@@ -18,6 +18,8 @@ Function::~Function()
 
 void Function::setExpr(std::string str)
 {
+    init = false;
+
     parser->SetExpr(str);
     valid = true;
     
@@ -40,11 +42,16 @@ void Function::setExpr(std::string str)
             break;
         }
     }
+    
+    init = true;
 }
 
 bool Function::compute(FTYPE *y, FTYPE x)
 {
     if (!valid) return true;
+
+    // Function::compute cause crashs if the object is not initialized. 
+    while (!init) sceKernelDelayThread(1000);
 
     cx = x;
     

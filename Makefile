@@ -6,11 +6,11 @@ OBJS = main.o view.o function.o functionmanager.o callbacks.o controls.o
 LIBS = -lglib2d -lpspvram -ljpeg -lpng -lz -lpspgum -lpspgu -lpsprtc -lpspfpu \
        -lmuparser -lm -lpsppower -lstdc++
 
-CFLAGS = -O2 -G0 -Wall -I./include -L./lib -g
+CFLAGS = -O2 -G0 -Wall -I./include -L./lib
 CXXFLAGS = $(CFLAGS) -fexceptions -fno-rtti
 ASFLAGS = $(CFLAGS)
 
-BUILD_PRX = 0
+BUILD_PRX = 1
 EXTRA_TARGETS = EBOOT.PBP
 PSP_EBOOT_TITLE = gPlot++
 PSP_FW_VERSION = 500

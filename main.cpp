@@ -2,7 +2,6 @@
 #include "callbacks.h"
 #include <glib2d.h>
 #include <pspkernel.h>
-#include <pspfpu.h>
 #include <psppower.h>
 
 PSP_MODULE_INFO("app", 0, 1, 1);
@@ -13,8 +12,7 @@ Main::Main() :
     ctrl(), manager(), view(&manager) 
 {
     g2dInit();
-    
-    pspFpuSetEnable(0);
+
     scePowerSetClockFrequency(333, 333, 166);
 }
 

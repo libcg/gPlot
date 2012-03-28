@@ -11,22 +11,22 @@ View::View(FunctionManager* manager) :
 {
 }
 
-float View::screenToViewX(FTYPE x)
+FTYPE View::screenToViewX(float x)
 {
     return ( x * this->w / G2D_SCR_W + this->x - this->w/2.f);
 }
 
-float View::screenToViewY(FTYPE y)
+FTYPE View::screenToViewY(float y)
 {
     return (-y * this->h / G2D_SCR_H + this->y + this->h/2.f);
 }
 
-FTYPE View::viewToScreenX(float x)
+float View::viewToScreenX(FTYPE x)
 {
     return (( x - this->x + this->w/2.f) * G2D_SCR_W / this->w);
 }
 
-FTYPE View::viewToScreenY(float y)
+float View::viewToScreenY(FTYPE y)
 {
     return ((-y + this->y + this->h/2.f) * G2D_SCR_H / this->h);
 }
@@ -105,7 +105,6 @@ void View::drawOrigin()
     g2dEnd();
 }
 
-
 void View::drawFunction()
 {
     static FTYPE a, b;
@@ -116,11 +115,11 @@ void View::drawFunction()
     for (unsigned int i=0; i<manager->size(); i++)
     {
         f = manager->getFunction(i);
+        values = f->getValues();
         if (!f->isValid()) continue;
         
         g2dBeginLines(G2D_STRIP);
         {
-            values = f->getValues();
             g2dSetColor(BLACK);
 
             try
@@ -131,6 +130,8 @@ void View::drawFunction()
                     b = f->getB();
                     x = viewToScreenX(a + (b-a) * j / values->size());
                     y = viewToScreenY(values->at(j));
+
+                    if (std::isnan(y)) continue;
 
                     g2dSetCoordXY(x, y);
                     g2dAdd();
