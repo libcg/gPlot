@@ -8,8 +8,10 @@ int FunctionManager::thread(unsigned int args, void *argp)
     {
         while (!_this->isDirty()) // SOON...
         {
-            sceKernelDelayThread(0);
+            sceKernelDelayThread(1000);
         }
+
+        std::cout << "update" << std::endl;
 
         for (unsigned int i=0; i<_this->size(); i++)
         {

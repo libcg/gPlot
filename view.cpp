@@ -52,9 +52,9 @@ void View::camera()
 
 void View::drawOrigin()
 {
-    float ox, oy;
-    int ivx, ivy;
-    int isx, isy;
+    static float ox, oy;
+    static int ivx, ivy;
+    static int isx, isy;
     
     ox = viewToScreenX(0.);
     oy = viewToScreenY(0.);
@@ -107,21 +107,32 @@ void View::drawOrigin()
 
 
 void View::drawFunction()
-{    
+{
+    static FTYPE a, b;
+    static float x, y;
+    static Function *f;
+    static std::vector<FTYPE> *values;
+
     for (unsigned int i=0; i<manager->size(); i++)
     {
-        Function *f = manager->getFunction(i);
+        f = manager->getFunction(i);
         if (!f->isValid()) continue;
         
         g2dBeginLines(G2D_STRIP);
         {
+            values = f->getValues();
             g2dSetColor(BLACK);
 
             try
             {
-                for (unsigned int j=0; j<f->getValues()->size(); j++)
+                for (unsigned int j=0; j<values->size(); j++)
                 {      
-                    g2dSetCoordXY(j, viewToScreenY(f->getValues()->at(j)));
+                    a = f->getA();
+                    b = f->getB();
+                    x = viewToScreenX(a + (b-a) * j / values->size());
+                    y = viewToScreenY(values->at(j));
+
+                    g2dSetCoordXY(x, y);
                     g2dAdd();
                 }
             }

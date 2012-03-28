@@ -13,6 +13,7 @@ private:
     FTYPE cx, cy;
     bool valid;
     std::vector<FTYPE>* values;
+    FTYPE a, b;
     
 public:
     Function();
@@ -23,6 +24,8 @@ public:
     bool isValid();
     std::string getExpr();
     std::vector<FTYPE>* getValues();
+    FTYPE getA();
+    FTYPE getB();
 };
 
 #endif

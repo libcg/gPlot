@@ -69,10 +69,14 @@ void Function::computeRange(FTYPE a, FTYPE b, unsigned int n)
     for (unsigned int i=0; i<tvalues->size(); i++)
     {
         compute(&tvalues->at(i), a + (b-a) * i / n);
+        
+        sceKernelDelayThread(1000);
     }
     
-    dvalues = values;
-    values = tvalues;
+    dvalues = this->values;
+    this->values = tvalues;
+    this->a = a;
+    this->b = b;
     delete dvalues;
 }
 
@@ -89,4 +93,14 @@ std::string Function::getExpr()
 std::vector<FTYPE>* Function::getValues()
 {
     return values;
+}
+
+FTYPE Function::getA()
+{
+    return a;
+}
+
+FTYPE Function::getB()
+{
+    return b;
 }
