@@ -117,10 +117,18 @@ void View::drawFunction()
         {
             g2dSetColor(BLACK);
 
-            for (unsigned int j=0; j<f->getValues()->size(); j++)
-            {      
-                g2dSetCoordXY(j, viewToScreenY(f->getValues()->at(j)));
-                g2dAdd();
+            try
+            {
+                for (unsigned int j=0; j<f->getValues()->size(); j++)
+                {      
+                    g2dSetCoordXY(j, viewToScreenY(f->getValues()->at(j)));
+                    g2dAdd();
+                }
+            }
+            catch (std::out_of_range& e)
+            {
+                std::cout << "FIXME: out of range in View::drawFunction"
+                          << std::endl;
             }
         }
         g2dEnd();

@@ -6,14 +6,16 @@
 #include "functionmanager.h"
 #include <glib2d.h>
 
-#define BASE_W 30.f
-#define BASE_H 17.f
+#define BASE_W     30.f
+#define BASE_H     17.f
 #define MOVE_ACCEL 0.06f
 #define MOVE_SPEED 0.4f
 #define ZOOM_ACCEL 0.06f
 #define ZOOM_SPEED 0.045f
 #define TINY_SPEED 0.001f
 #define TINY_ZOOM  0.001f
+#define GRAD_W     10
+#define GRAD_H     5
 
 class FunctionManager;
 

@@ -68,7 +68,7 @@ void Function::computeRange(FTYPE a, FTYPE b, unsigned int n)
 
     for (unsigned int i=0; i<tvalues->size(); i++)
     {
-        compute(&tvalues->at(i), a + (b-a) / n * i);
+        compute(&tvalues->at(i), a + (b-a) * i / n);
     }
     
     dvalues = values;
