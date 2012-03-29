@@ -10,7 +10,7 @@ class Function
 {
 private:
     mu::Parser *parser;
-    FTYPE cx, cy;
+    MUP_BASETYPE cx, cy;
     bool valid, init;
     std::vector<FTYPE>* values;
     FTYPE a, b;

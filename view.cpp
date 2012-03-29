@@ -31,7 +31,7 @@ float View::viewToScreenX(FTYPE x)
 
 float View::viewToScreenY(FTYPE y)
 {
-    return ((-y + this->y + this->h/2.f) * G2D_SCR_H / this->h);
+    return (-(double)y + this->y + this->h/2.f) * G2D_SCR_H / this->h;
 }
 
 void View::camera()
@@ -59,8 +59,8 @@ void View::drawOrigin()
     static int ivx, ivy;
     static int isx, isy;
     
-    ox = viewToScreenX(0.);
-    oy = viewToScreenY(0.);
+    ox = viewToScreenX(0.f);
+    oy = viewToScreenY(0.f);
     
     g2dBeginLines((g2dLine_Mode)0);
     {
