@@ -9,9 +9,17 @@ View::View(FunctionManager* manager) :
             zs(1.f), zst(1.f),
     w(BASE_W), h(BASE_H)
 {
+    intraFontInit();
+    sfont = intraFontLoad("flash0:/font/ltn8.pgf", INTRAFONT_CACHE_MED);
+
     manager->update(screenToViewX(0.f),
                     screenToViewX(G2D_SCR_W),
                     G2D_SCR_W);
+}
+
+View::~View()
+{
+    intraFontUnload(sfont);
 }
 
 FTYPE View::screenToViewX(float x)
@@ -88,28 +96,57 @@ void View::drawOrigin()
     ivx = floor(screenToViewX(0.f) / factor - 1.f) * factor;
     ivy = floor(screenToViewY(0.f) / factor + 1.f) * factor;
     
+    intraFontSetStyle(sfont, FONT_SIZE, BLACK, 0, 0.f, 0);
+
     g2dBeginPoints();
     {
         g2dSetColor(DARKGRAY);
 
+        sfont->options = INTRAFONT_ALIGN_CENTER;
         while ((isx = viewToScreenX(ivx += factor)) < G2D_SCR_W)
         {
             if (ivx == 0.f) continue;
             
+            // Point
             isy = oy - 1.f;
             isy = (isy < 0.f ? 0.f : (isy >= G2D_SCR_H ? G2D_SCR_H-1 : isy));
             g2dSetCoordXY(isx, isy);
             g2dAdd();
+            
+            // Label
+            if (isy < FONT_LIMIT)
+            {
+                isy += 10;
+            }
+            else
+            {
+                isy -= 4;
+            }
+            intraFontPrintf(sfont, isx, isy, "%.4g", ivx);
         }
 
         while ((isy = viewToScreenY(ivy -= factor)) < G2D_SCR_H)
         {
             if (ivy == 0.f) continue;
         
+            // Point
             isx = ox + 1.f;
             isx = (isx < 0.f ? 0.f : (isx >= G2D_SCR_W ? G2D_SCR_W-1 : isx));
             g2dSetCoordXY(isx, isy);
             g2dAdd();
+            
+            // Label
+            if (isx > G2D_SCR_W-FONT_LIMIT)
+            {
+                sfont->options = INTRAFONT_ALIGN_RIGHT;
+                isx -= 3;
+            }
+            else
+            {
+                sfont->options = INTRAFONT_ALIGN_LEFT;
+                isx += 4;
+            }
+            intraFontPrintf(sfont, isx, isy+3, "%.4g", ivy);
         }
     }
     g2dEnd();

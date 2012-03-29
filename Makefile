@@ -3,8 +3,8 @@ TARGET = gPlot++
 
 OBJS = main.o view.o function.o functionmanager.o callbacks.o controls.o
        
-LIBS = -lglib2d -lpspvram -ljpeg -lpng -lz -lpspgum -lpspgu -lpsprtc -lpspfpu \
-       -lmuparser -lm -lpsppower -lstdc++
+LIBS = -lintrafont -lglib2d -lpspvram -ljpeg -lpng -lz -lpspgum -lpspgu \
+       -lpsprtc -lpspfpu -lmuparser -lm -lpsppower -lstdc++
 
 CFLAGS = -O2 -G0 -Wall -I./include -L./lib
 CXXFLAGS = $(CFLAGS) -fexceptions -fno-rtti

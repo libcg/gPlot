@@ -5,6 +5,7 @@
 #include "controls.h"
 #include "functionmanager.h"
 #include <glib2d.h>
+#include <intraFont.h>
 
 #define BASE_W     30.f
 #define BASE_H     17.f
@@ -15,6 +16,8 @@
 #define TINY_SPEED 0.001f
 #define TINY_ZOOM  0.001f
 #define FACTOR_F   3.f
+#define FONT_SIZE  0.63f
+#define FONT_LIMIT 50
 
 class FunctionManager;
 
@@ -22,6 +25,7 @@ class View
 {
 private:
     FunctionManager* manager;
+    intraFont* sfont;
     float x, xs, xst;
     float y, ys, yst;
     float    zs, zst;
@@ -37,6 +41,7 @@ private:
 
 public:
     View(FunctionManager* manager);
+    ~View();
     void draw();
     void controls(Controls* ctrl);
 };
