@@ -14,8 +14,7 @@
 #define ZOOM_SPEED 0.045f
 #define TINY_SPEED 0.001f
 #define TINY_ZOOM  0.001f
-#define GRAD_W     10
-#define GRAD_H     5
+#define FACTOR_F   3.f
 
 class FunctionManager;
 

@@ -56,8 +56,9 @@ void View::camera()
 void View::drawOrigin()
 {
     static float ox, oy;
-    static int ivx, ivy;
+    static float ivx, ivy;
     static int isx, isy;
+    static float factor;
     
     ox = viewToScreenX(0.f);
     oy = viewToScreenY(0.f);
@@ -83,25 +84,31 @@ void View::drawOrigin()
     }
     g2dEnd();
     
-    ivx = (int)screenToViewX(0.f) - 1;
-    ivy = (int)screenToViewY(0.f) + 1;
+    factor = pow(2.f, -floor(log(BASE_H / this->h) / log(2.f))) * FACTOR_F;
+    ivx = floor(screenToViewX(0.f) / factor - 1.f) * factor;
+    ivy = floor(screenToViewY(0.f) / factor + 1.f) * factor;
     
     g2dBeginPoints();
     {
         g2dSetColor(DARKGRAY);
-        
-        while ((isx = viewToScreenX(++ivx)) < G2D_SCR_W)
+
+        while ((isx = viewToScreenX(ivx += factor)) < G2D_SCR_W)
         {
             if (ivx == 0.f) continue;
             
-            g2dSetCoordXY(isx, oy-1.f);
+            isy = oy - 1.f;
+            isy = (isy < 0.f ? 0.f : (isy >= G2D_SCR_H ? G2D_SCR_H-1 : isy));
+            g2dSetCoordXY(isx, isy);
             g2dAdd();
         }
-        while ((isy = viewToScreenY(--ivy)) < G2D_SCR_H)
+
+        while ((isy = viewToScreenY(ivy -= factor)) < G2D_SCR_H)
         {
             if (ivy == 0.f) continue;
         
-            g2dSetCoordXY(ox+1.f, isy);
+            isx = ox + 1.f;
+            isx = (isx < 0.f ? 0.f : (isx >= G2D_SCR_W ? G2D_SCR_W-1 : isx));
+            g2dSetCoordXY(isx, isy);
             g2dAdd();
         }
     }
