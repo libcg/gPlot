@@ -20,6 +20,7 @@ View::View(FunctionManager* manager) :
 View::~View()
 {
     intraFontUnload(sfont);
+    intraFontShutdown();
 }
 
 FTYPE View::screenToViewX(float x)
@@ -44,6 +45,42 @@ float View::viewToScreenY(FTYPE y)
 
 void View::camera()
 {
+    // X axis bound
+    if (x < -MOVE_MAX)
+    {
+        x = -MOVE_MAX;
+        xs = -xs;
+    }
+    else if (x > MOVE_MAX)
+    {
+        x = MOVE_MAX;
+        xs = -xs;
+    }
+    // Y axis bound
+    if (y < -MOVE_MAX)
+    {
+        y = -MOVE_MAX;
+        ys = -ys;
+    }
+    else if (y > MOVE_MAX)
+    {
+        y = MOVE_MAX;
+        ys = -ys;
+    }
+    // Z axis bound (zoom)
+    if (w < 1.f/ZOOM_MAX)
+    {
+        w = 1.f/ZOOM_MAX;
+        h = w * BASE_H / BASE_W;
+        zs = 1.f/zs;
+    }
+    else if (w > ZOOM_MAX)
+    {
+        w = ZOOM_MAX;
+        h = w * BASE_H / BASE_W;
+        zs = 1.f/zs;
+    }
+
     xs += (xst * MOVE_SPEED * w / BASE_W - xs) * MOVE_ACCEL;
     ys += (yst * MOVE_SPEED * h / BASE_H - ys) * MOVE_ACCEL;
     zs += (pow(2.f, -zst * ZOOM_SPEED) - zs) * ZOOM_ACCEL;
@@ -62,11 +99,11 @@ void View::camera()
 }
 
 void View::drawOrigin()
-{
-    static float ox, oy;
-    static float ivx, ivy;
-    static int isx, isy;
-    static float factor;
+{    
+    float ox, oy;
+    float ivx, ivy;
+    int isx, isy;
+    float factor;
     
     ox = viewToScreenX(0.f);
     oy = viewToScreenY(0.f);
@@ -154,10 +191,10 @@ void View::drawOrigin()
 
 void View::drawFunction()
 {
-    static FTYPE a, b;
-    static float x, y;
-    static Function *f;
-    static std::vector<FTYPE> *values;
+    FTYPE a, b;
+    float x, y;
+    Function *f;
+    std::vector<FTYPE> *values;
 
     for (unsigned int i=0; i<manager->size(); i++)
     {
@@ -169,6 +206,9 @@ void View::drawFunction()
         {
             g2dSetColor(BLACK);
 
+            // Function lock
+            f->setAccess(true);
+            
             for (unsigned int j=0; j<values->size(); j++)
             {      
                 a = f->getA();
@@ -181,6 +221,9 @@ void View::drawFunction()
                 g2dSetCoordXY(x, y);
                 g2dAdd();
             }
+            
+            // Function unlock
+            f->setAccess(false);
         }
         g2dEnd();
     }

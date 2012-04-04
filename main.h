@@ -8,9 +8,9 @@
 class Main
 {
 private:
-    Controls ctrl;
-    FunctionManager manager;
-    View view;
+    Controls *ctrl;
+    FunctionManager *manager;
+    View *view;
 
 public:
     Main();

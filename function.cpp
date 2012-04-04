@@ -2,7 +2,7 @@
 #include <pspthreadman.h>
 
 Function::Function() :
-    valid(false), init(true)
+    valid(false), init(true), access(false)
 {
     parser = new mu::Parser();
     parser->DefineVar("x", &cx);
@@ -46,6 +46,11 @@ void Function::setExpr(std::string str)
     init = true;
 }
 
+void Function::setAccess(bool state)
+{
+    access = state;
+}
+
 bool Function::compute(FTYPE *y, FTYPE x)
 {
     if (!valid) return true;
@@ -79,6 +84,9 @@ void Function::computeRange(FTYPE a, FTYPE b, unsigned int n)
         
         sceKernelDelayThread(1000);
     }
+    
+    // Wait for no access to change values, because values size can change too.
+    while (access) sceKernelDelayThread(1000);
     
     dvalues = this->values;
     this->values = tvalues;

@@ -11,7 +11,7 @@ class Function
 private:
     mu::Parser *parser;
     MUP_BASETYPE cx, cy;
-    bool valid, init;
+    bool valid, init, access;
     std::vector<FTYPE>* values;
     FTYPE a, b;
     
@@ -19,6 +19,7 @@ public:
     Function();
     ~Function();
     void setExpr(std::string str);
+    void setAccess(bool state);
     bool compute(FTYPE *y, FTYPE x);
     void computeRange(FTYPE a, FTYPE b, unsigned int n);
     bool isValid();

@@ -26,7 +26,7 @@ int FunctionManager::thread(unsigned int args, void *argp)
 }
 
 FunctionManager::FunctionManager() :
-    functions(5, (Function*)NULL), dirty(false)
+    functions(FUN_N, (Function*)NULL), dirty(false)
 {
     static FunctionManager *_this = this;
 

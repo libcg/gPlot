@@ -6,6 +6,8 @@
 #include <vector>
 #include <pspkernel.h>
 
+#define FUN_N 4
+
 class View;
 
 class FunctionManager

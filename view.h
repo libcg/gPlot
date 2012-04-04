@@ -11,8 +11,10 @@
 #define BASE_H     17.f
 #define MOVE_ACCEL 0.06f
 #define MOVE_SPEED 0.4f
+#define MOVE_MAX   1000.f
 #define ZOOM_ACCEL 0.06f
 #define ZOOM_SPEED 0.045f
+#define ZOOM_MAX   500.f
 #define TINY_SPEED 0.001f
 #define TINY_ZOOM  0.001f
 #define FACTOR_F   3.f

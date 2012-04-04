@@ -8,9 +8,12 @@ PSP_MODULE_INFO("app", 0, 1, 1);
 PSP_HEAP_SIZE_KB(-4096);
 PSP_MAIN_THREAD_ATTR(THREAD_ATTR_USER);
 
-Main::Main() :
-    ctrl(), manager(), view(&manager) 
+Main::Main()
 {
+    ctrl = new Controls();
+    manager = new FunctionManager();
+    view = new View(manager);
+
     g2dInit();
 
     scePowerSetClockFrequency(333, 333, 166);
@@ -18,6 +21,10 @@ Main::Main() :
 
 Main::~Main()
 {
+    delete view;
+    delete manager;
+    delete ctrl;
+
     g2dTerm();
 }
 
@@ -25,12 +32,12 @@ int Main::run()
 {
     while (1)
     {
-        ctrl.update();
-        view.controls(&ctrl);
+        ctrl->update();
+        view->controls(ctrl);
         
         g2dClear(WHITE);
         {
-            view.draw();
+            view->draw();
         }
         g2dFlip(G2D_VSYNC);
     }
