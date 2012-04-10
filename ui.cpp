@@ -3,7 +3,7 @@
 
 UI::UI(FunctionManager* manager, intraFont *sfont) :
     manager(manager), sfont(sfont),
-    active(false), selected(0)
+    active(false), activated(false), selected(0)
 {
     danzeffInit();
     danzeffSetMode(DANZEFF_NUMBERS);
@@ -92,6 +92,12 @@ void UI::drawFunctionList()
 
 void UI::draw()
 {
+    if (!activated)
+    {
+        intraFontSetStyle(sfont, 1.f, BLACK, WHITE, 0.f, INTRAFONT_ALIGN_RIGHT);                          
+        intraFontPrint(sfont, G2D_SCR_W-10, G2D_SCR_H-10, "Press start...");
+    }
+
     if (!active) return;
     
     // Fade
@@ -115,6 +121,7 @@ void UI::controls(Controls* ctrl)
     if (ctrl->buttonJustPressed(PSP_CTRL_START))
     {
         active = !active;
+        activated = true;
     }
 
     if (!active) return;

@@ -16,7 +16,7 @@ class UI
 private:
     FunctionManager* manager;
     intraFont *sfont;
-    bool active;
+    bool active, activated;
     int selected;
     
     void edit(DanzeffChar c);
