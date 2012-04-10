@@ -249,12 +249,20 @@ void View::controls(Controls* ctrl)
     
     if (ui->isActive()) return;
 
+    // D-Pad
     xst = ctrl->buttonPressed(PSP_CTRL_RIGHT) -
-          ctrl->buttonPressed(PSP_CTRL_LEFT);
-          
+          ctrl->buttonPressed(PSP_CTRL_LEFT);          
     yst = ctrl->buttonPressed(PSP_CTRL_UP) -
-          ctrl->buttonPressed(PSP_CTRL_DOWN);
-          
+          ctrl->buttonPressed(PSP_CTRL_DOWN);          
     zst = ctrl->buttonPressed(PSP_CTRL_RTRIGGER) -
           ctrl->buttonPressed(PSP_CTRL_LTRIGGER);
+    // Analog     
+    if (fabs(ctrl->getPad()->Lx - 127) > 50)
+    {
+        xst += (ctrl->getPad()->Lx - 127) / 127.f;
+    }
+    if (fabs(ctrl->getPad()->Ly - 127) > 50)
+    {
+        yst -= (ctrl->getPad()->Ly - 127) / 127.f;
+    }
 }
