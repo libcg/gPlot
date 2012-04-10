@@ -11,14 +11,18 @@ View::View(FunctionManager* manager) :
 {
     intraFontInit();
     sfont = intraFontLoad("flash0:/font/ltn8.pgf", INTRAFONT_CACHE_MED);
-
+    
     manager->update(screenToViewX(0.f),
                     screenToViewX(G2D_SCR_W),
                     G2D_SCR_W);
+    
+    ui = new UI(manager, sfont);
 }
 
 View::~View()
 {
+    delete ui;
+
     intraFontUnload(sfont);
     intraFontShutdown();
 }
@@ -204,7 +208,7 @@ void View::drawFunction()
         
         g2dBeginLines(G2D_STRIP);
         {
-            g2dSetColor(BLACK);
+            g2dSetColor(F_COLOR(i));
 
             // Function lock
             f->setAccess(true);
@@ -234,31 +238,23 @@ void View::draw()
     camera();
     drawOrigin();
     drawFunction();
+    
+    ui->draw();
 }
 
 void View::controls(Controls* ctrl)
 {
+    ui->controls(ctrl);
+    xst = yst = zst = 0.f;
+    
+    if (ui->isActive()) return;
+
     xst = ctrl->buttonPressed(PSP_CTRL_RIGHT) -
           ctrl->buttonPressed(PSP_CTRL_LEFT);
+          
     yst = ctrl->buttonPressed(PSP_CTRL_UP) -
           ctrl->buttonPressed(PSP_CTRL_DOWN);
+          
     zst = ctrl->buttonPressed(PSP_CTRL_RTRIGGER) -
           ctrl->buttonPressed(PSP_CTRL_LTRIGGER);
-          
-    if (ctrl->buttonPressed(PSP_CTRL_CROSS))
-    {
-        manager->setFunction(0, "0.5*x^3");
-    }
-    if (ctrl->buttonPressed(PSP_CTRL_SQUARE))
-    {
-        manager->setFunction(1, "cos(x)");
-    }
-    if (ctrl->buttonPressed(PSP_CTRL_TRIANGLE))
-    {
-        manager->setFunction(2, "x*sin(x)");
-    }
-    if (ctrl->buttonPressed(PSP_CTRL_CIRCLE))
-    {
-        manager->setFunction(3, "exp(x)");
-    }
 }

@@ -3,6 +3,7 @@
 #include <glib2d.h>
 #include <pspkernel.h>
 #include <psppower.h>
+#include <pspctrl.h>
 
 PSP_MODULE_INFO("app", 0, 1, 1);
 PSP_HEAP_SIZE_KB(-4096);
@@ -17,6 +18,7 @@ Main::Main()
     g2dInit();
 
     scePowerSetClockFrequency(333, 333, 166);
+    sceCtrlSetSamplingMode(PSP_CTRL_MODE_ANALOG);
 }
 
 Main::~Main()

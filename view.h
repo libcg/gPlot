@@ -4,6 +4,7 @@
 #include "common.h"
 #include "controls.h"
 #include "functionmanager.h"
+#include "ui.h"
 #include <glib2d.h>
 #include <intraFont.h>
 
@@ -22,11 +23,13 @@
 #define FONT_LIMIT 50
 
 class FunctionManager;
+class UI;
 
 class View
 {
 private:
-    FunctionManager* manager;
+    FunctionManager *manager;
+    UI *ui;
     intraFont* sfont;
     float x, xs, xst;
     float y, ys, yst;

@@ -4,6 +4,7 @@
 #include "functionmanager.h"
 #include "controls.h"
 #include "view.h"
+#include "ui.h"
 
 class Main
 {
