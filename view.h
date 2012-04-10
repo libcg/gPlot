@@ -16,8 +16,8 @@
 #define ZOOM_ACCEL 0.06f
 #define ZOOM_SPEED 0.045f
 #define ZOOM_MAX   500.f
-#define TINY_SPEED 0.001f
-#define TINY_ZOOM  0.001f
+#define TINY_SPEED 0.0001f
+#define TINY_ZOOM  0.0001f
 #define FACTOR_F   3.f
 #define FONT_SIZE  0.63f
 #define FONT_LIMIT 50

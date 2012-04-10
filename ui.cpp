@@ -18,7 +18,7 @@ UI::~UI()
 void UI::edit(DanzeffChar c)
 {
     std::string str = manager->getFunction(selected)->getExpr();
-    str = str.substr(0, str.size()-1);
+    str = str.substr(0, str.size()-1); // muParser seems to add an end space 
 
     switch (c)
     {
@@ -94,6 +94,7 @@ void UI::draw()
 {
     if (!active) return;
     
+    // Fade
     g2dBeginRects(NULL);
     {
         g2dSetColor(BLACK);
@@ -120,8 +121,8 @@ void UI::controls(Controls* ctrl)
     
     selected += ctrl->buttonJustPressed(PSP_CTRL_DOWN) -
                 ctrl->buttonJustPressed(PSP_CTRL_UP);
-    if (selected < 0) selected = (int)manager->size() - 1;
-    if (selected > (int)manager->size() - 1) selected = 0;
+    if (selected < 0) selected++;
+    if (selected > (int)manager->size() - 1) selected--;
     
     edit(danzeffRead(*ctrl->getPad()));
 }

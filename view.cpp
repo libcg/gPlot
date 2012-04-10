@@ -1,5 +1,4 @@
 #include "view.h"
-#include <iostream>
 #include <cmath>
 
 View::View(FunctionManager* manager) :
