@@ -69,8 +69,7 @@ void UI::drawFunctionList()
     if (++blink >= 60) blink = 0;
 
     for (unsigned int i=0; i<manager->size(); i++)
-    {        
-        // Background
+    {
         g2dBeginQuads(NULL);
         {
             g2dSetCoordXY(0, i * ELEMENT_H);
@@ -103,14 +102,19 @@ void UI::drawFunctionList()
             g2dPop();
         }
         g2dEnd();
-        
+    }
+
+    intraFontActivate(sfont);
+   
+    for (unsigned int i=0; i<manager->size(); i++)
+    {        
         // Expression and cursor
         Function* f = manager->getFunction(i);
         std::string str = f->getExpr();
         float x;
         
         intraFontSetStyle(sfont, 0.9f, (f->isValid() ? BLACK : RED), 0, 0.f,
-                          INTRAFONT_ALIGN_LEFT);
+                          INTRAFONT_ALIGN_LEFT | INTRAFONT_ACTIVE);
         intraFontPrint(sfont, 10, i * ELEMENT_H + 13, str.c_str());
         
         if ((int)i == selected && blink / 30 == 0) // 0.5s blink
@@ -151,7 +155,7 @@ void UI::draw()
     if (!active) return;
     
     drawFunctionList();
-    
+
     danzeffRender(G2D_SCR_W/2 - DANZEFF_W/2, G2D_SCR_H - DANZEFF_H);
 }
 

@@ -136,13 +136,14 @@ void View::drawOrigin()
     ivx = floor(screenToViewX(0.f) / factor - 1.f) * factor;
     ivy = floor(screenToViewY(0.f) / factor + 1.f) * factor;
     
+    intraFontActivate(sfont);
     intraFontSetStyle(sfont, FONT_SIZE, BLACK, 0, 0.f, 0);
 
     g2dBeginPoints();
     {
         g2dSetColor(DARKGRAY);
 
-        sfont->options = INTRAFONT_ALIGN_CENTER;
+        sfont->options = INTRAFONT_ALIGN_CENTER | INTRAFONT_ACTIVE;
         while ((isx = viewToScreenX(ivx += factor)) < G2D_SCR_W)
         {
             if (ivx == 0.f) continue;
@@ -178,12 +179,12 @@ void View::drawOrigin()
             // Label
             if (isx > G2D_SCR_W-FONT_LIMIT)
             {
-                sfont->options = INTRAFONT_ALIGN_RIGHT;
+                sfont->options = INTRAFONT_ALIGN_RIGHT | INTRAFONT_ACTIVE;
                 isx -= 3;
             }
             else
             {
-                sfont->options = INTRAFONT_ALIGN_LEFT;
+                sfont->options = INTRAFONT_ALIGN_LEFT | INTRAFONT_ACTIVE;
                 isx += 4;
             }
             intraFontPrintf(sfont, isx, isy+3, "%.4g", ivy);
@@ -234,8 +235,6 @@ void View::drawFunction()
 
 void View::draw()
 {
-    intraFontActivate(sfont);
-
     camera();
     drawOrigin();
     drawFunction();
