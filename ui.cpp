@@ -154,9 +154,9 @@ void UI::draw()
 
     if (!active) return;
     
-    drawFunctionList();
-
     danzeffRender(G2D_SCR_W/2 - DANZEFF_W/2, G2D_SCR_H - DANZEFF_H);
+    
+    drawFunctionList();
 }
 
 void UI::controls(Controls* ctrl)
