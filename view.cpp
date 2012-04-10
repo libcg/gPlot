@@ -234,6 +234,8 @@ void View::drawFunction()
 
 void View::draw()
 {
+    intraFontActivate(sfont);
+
     camera();
     drawOrigin();
     drawFunction();

@@ -3,7 +3,8 @@
 
 UI::UI(FunctionManager* manager, intraFont *sfont) :
     manager(manager), sfont(sfont),
-    active(false), activated(false), selected(0)
+    active(false), activated(false),
+    selected(0), cursor(0)
 {
     danzeffInit();
     danzeffSetMode(DANZEFF_NUMBERS);
@@ -18,23 +19,44 @@ UI::~UI()
 void UI::edit(DanzeffChar c)
 {
     std::string str = manager->getFunction(selected)->getExpr();
-    str = str.substr(0, str.size()-1); // muParser seems to add an end space 
+    str = str.substr(0, str.size()-1); // Delete the ending space
 
     switch (c)
     {
         case '\010': // Del
-            str = str.substr(0, str.size()-1);
+            if (cursor > 0)
+            {
+                str = str.substr(0, cursor-1) +
+                      str.substr(cursor, str.length());
+                cursor--;
+            }
+            else if (str.length() > 0)
+            {
+                str = str.substr(1, str.length());
+            }
             break;
             
-        case DANZEFF_LEFT:
+        case DANZEFF_LEFT: // Move
+            if (cursor > 0) cursor--;
+            break;
         case DANZEFF_RIGHT:
-        case DANZEFF_SELECT:
-        case DANZEFF_START:
+            if (cursor < (int)str.length()) cursor++;
+            break;
+
+        case DANZEFF_SELECT: // Clear
+            str.clear();
+            cursor = 0;
+            break;
+
+        case DANZEFF_START:  // Do nothing
         case '\0':
-            return; // Do nothing
+            return;
             
-        default: // ASCII char
-            str.push_back((char)c);
+        default: // Type
+            str = str.substr(0, cursor) +
+                  (char)c +
+                  str.substr(cursor, str.length());
+            cursor++;
             break;                
     }
     
@@ -43,6 +65,9 @@ void UI::edit(DanzeffChar c)
 
 void UI::drawFunctionList()
 {
+    static int blink = 0;
+    if (++blink >= 60) blink = 0;
+
     for (unsigned int i=0; i<manager->size(); i++)
     {        
         // Background
@@ -62,32 +87,57 @@ void UI::drawFunctionList()
             g2dSetCoordXYRelative(-G2D_SCR_W, 0);
             g2dAdd();
             g2dPop();
-            
-            // Color indicator
-            static int c=0;
-            if ((c += 2) > 255) c = 0;
 
+            // Color
             g2dPush();
             g2dSetColor(F_COLOR(i));
-            g2dSetAlpha((int)i == selected ? c : 255);
             g2dAdd();
             g2dSetCoordXYRelative(10, 0);
+            g2dSetAlpha(0);
             g2dAdd();
-            g2dSetCoordXYRelative(-6, ELEMENT_H);
+            g2dSetCoordXYRelative(0, ELEMENT_H);
             g2dAdd();
-            g2dSetCoordXYRelative(-4, 0);
+            g2dSetCoordXYRelative(-10, 0);
+            g2dSetAlpha(255);
             g2dAdd();
             g2dPop();
         }
         g2dEnd();
         
-        // Expression
+        // Expression and cursor
         Function* f = manager->getFunction(i);
         std::string str = f->getExpr();
+        float x;
+        
         intraFontSetStyle(sfont, 0.9f, (f->isValid() ? BLACK : RED), 0, 0.f,
                           INTRAFONT_ALIGN_LEFT);
         intraFontPrint(sfont, 10, i * ELEMENT_H + 13, str.c_str());
+        
+        if ((int)i == selected && blink / 30 == 0) // 0.5s blink
+        {
+            x = intraFontMeasureTextEx(sfont, str.c_str(), cursor);
+            sfont->color = BLACK;
+            sfont->size = 1.f;
+            intraFontPrint(sfont, 10 + x, i * ELEMENT_H + 13 - 0.5f, "|");
+        }
     }
+    
+    // Shadow
+    g2dBeginQuads(NULL);
+    {
+        g2dSetColor(BLACK);
+        g2dSetAlpha(255/4);
+        g2dSetCoordXY(0, manager->size() * ELEMENT_H);
+        g2dAdd();
+        g2dSetCoordXYRelative(G2D_SCR_W, 0);
+        g2dAdd();
+        g2dSetCoordXYRelative(0, 2*ELEMENT_H);
+        g2dSetAlpha(0);
+        g2dAdd();
+        g2dSetCoordXYRelative(-G2D_SCR_W, 0);
+        g2dAdd();
+    }
+    g2dEnd();
 }
 
 void UI::draw()
@@ -99,17 +149,6 @@ void UI::draw()
     }
 
     if (!active) return;
-    
-    // Fade
-    g2dBeginRects(NULL);
-    {
-        g2dSetColor(BLACK);
-        g2dSetAlpha(255/3);
-        g2dSetCoordXY(0, 0);
-        g2dSetScaleWH(G2D_SCR_W, G2D_SCR_H);
-        g2dAdd();
-    }
-    g2dEnd();
     
     drawFunctionList();
     
@@ -126,11 +165,17 @@ void UI::controls(Controls* ctrl)
 
     if (!active) return;
     
+    // Selector
     selected += ctrl->buttonJustPressed(PSP_CTRL_DOWN) -
                 ctrl->buttonJustPressed(PSP_CTRL_UP);
     if (selected < 0) selected++;
     if (selected > (int)manager->size() - 1) selected--;
+
+    std::string str = manager->getFunction(selected)->getExpr();
+    str = str.substr(0, str.size()-1); // Delete the ending space
+    if (cursor > (int)str.length()) cursor = str.length();
     
+    // Edit
     edit(danzeffRead(*ctrl->getPad()));
 }
 
