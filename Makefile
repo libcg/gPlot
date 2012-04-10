@@ -13,6 +13,7 @@ ASFLAGS = $(CFLAGS)
 BUILD_PRX = 1
 EXTRA_TARGETS = EBOOT.PBP
 PSP_EBOOT_TITLE = gPlot++
+PSP_EBOOT_ICON = icon0.png
 PSP_FW_VERSION = 500
 
 PSPSDK=$(shell psp-config --pspsdk-path)
