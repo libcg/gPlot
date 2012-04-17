@@ -1,3 +1,10 @@
+/* 
+ * gPlot++ by Geecko
+ *
+ * This work is licensed under a Creative Commons license.
+ * See LICENSE for more details.
+ */
+
 #include "function.h"
 #include <pspthreadman.h>
 

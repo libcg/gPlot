@@ -1,3 +1,10 @@
+/* 
+ * gPlot++ by Geecko
+ *
+ * This work is licensed under a Creative Commons license.
+ * See LICENSE for more details.
+ */
+
 #ifndef FUNCTION_H
 #define FUNCTION_H
 
