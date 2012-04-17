@@ -1,3 +1,33 @@
-gPlot++ is a function plotter for PSP.
+gPlot++ 1.0 by Geecko, 2012
 
-It uses muParser to parse mathematical expressions and gLib2D to display them.
+* INTRODUCTION *
+
+gPlot++ is a function plotter for PSP made by Geecko, coded using C++.
+
+Several libraries are used:
+    - muParser, a math parser library (https://github.com/GeeckoDev/muParser)
+    - gLib2D, a 2D graphics library made by Geecko (https://github.com/GeeckoDev/gLib2D)
+    - intraFont, a font rendering library made by BenHur (https://github.com/GeeckoDev/intraFont-G)
+    - Danzeff, an OSK library made by Danzel and Jeff Chen (https://github.com/GeeckoDev/Danzeff-G)
+    
+gPlot++ can plot up to 4 functions at the same time. These are computed asynchronously to let the view run at 60fps, allowing smooth zoom and pan through it.
+
+Since gPlot++ makes uses of muParser to parse the expressions, some functions and operators are predefined such as sin(), exp(), sqrt(), +, ^, <, >, etc. The complete list is available at http://muparser.sourceforge.net/mup_features.html#idDef2.
+
+* CONTROLS *
+
+D-pad - Move the view / Move the cursor
+Analog - Move the view / Danzeff select
+L/R trigger - Zoom / Danzeff mode
+/\OX[] - Danzeff character
+Select - Clear the selected line
+Start - Toggle edit
+
+* OTHER *
+
+Fork me on Github: https://github.com/GeeckoDev/gPlot
+
+Contact: geecko.dev@free.fr
+Follow me on Twitter: https://twitter.com/GeeckoDev
+The PSP scene is not dead yet ;)
+
