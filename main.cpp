@@ -58,7 +58,5 @@ int main(int argc, char *argv[])
 {
     callbacks_setup();
     
-    Main main;
-    
-    return main.run();
+    return Main().run();
 }
